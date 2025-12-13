@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class DeliveryZone : MonoBehaviourPun
 {
+    [Header("Configuracion Delivery")]
+    public int allowedTeam;
+
     private void OnTriggerEnter(Collider other)
     {
         if (!GameManager.Instance.IsPlaying())
@@ -10,6 +13,10 @@ public class DeliveryZone : MonoBehaviourPun
 
         PhotonView pv = other.GetComponent<PhotonView>();
         if (pv == null || !pv.IsMine)
+            return;
+
+        PlayerTeam team = other.GetComponent<PlayerTeam>();
+        if (team == null || team.teamId != allowedTeam)
             return;
 
         PlayerPickup pickup = other.GetComponent<PlayerPickup>();
@@ -20,13 +27,12 @@ public class DeliveryZone : MonoBehaviourPun
         if (artifact == null)
             return;
 
-        Debug.Log("[DeliveryZone] Entrega válida");
+        Debug.Log("🎯 Entrega final — fin del juego");
 
         pickup.ClearArtifact();
         artifact.Drop(transform.position);
 
-        PlayerScore score = other.GetComponent<PlayerScore>();
-        if (score != null)
-            score.AddPoint();
+        // 🧊 CONGELAR JUEGO
+        GameManager.Instance.EndGame();
     }
 }

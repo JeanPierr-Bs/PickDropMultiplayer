@@ -1,23 +1,30 @@
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 public class ServerConect : MonoBehaviourPunCallbacks
 {
-    // void Start()
+    // void Awake()
     // {
-    //     // Conectar al servidor de Photon
-    //     PhotonNetwork.ConnectUsingSettings();
+    //     PhotonNetwork.AutomaticallySyncScene = true;
     // }
-
     public void StartGame()
     {
         // Crear o unirse a una sala
         //PhotonNetwork.JoinOrCreateRoom("DefaultRoom", new RoomOptions { MaxPlayers = 4 }, TypedLobby.Default);
         PhotonNetwork.ConnectUsingSettings();
-
     }
+
+    // void Start()
+    // {
+    //     if(!PhotonNetwork.IsConnected)
+    //     {
+    //         Debug.Log("🔌 Conectando a Photon...");
+    //         PhotonNetwork.ConnectUsingSettings();
+    //     }
+    // }
 
     public override void OnConnectedToMaster()
     {
@@ -34,6 +41,6 @@ public class ServerConect : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("🚀 Entraste a la sala, cargando escena de juego...");
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("GamePlay");
     }
 }

@@ -9,6 +9,7 @@ public class CreateAndJoin : MonoBehaviourPunCallbacks
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public TMP_InputField inputCreate;
     public TMP_InputField inputJoin;
+    
     public void CreateRoom()
     {
         PhotonNetwork.CreateRoom(inputCreate.text, new RoomOptions { MaxPlayers = 4 });
@@ -25,13 +26,11 @@ public class CreateAndJoin : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("🚀 Entraste a la sala, cargando escena de juego...");
+        // if(PhotonNetwork.IsMasterClient)
+        // {
+        //     PhotonNetwork.LoadLevel("GamePlay");
+        // }
         SceneManager.LoadScene("GamePlay");
-    }
-
-    
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame

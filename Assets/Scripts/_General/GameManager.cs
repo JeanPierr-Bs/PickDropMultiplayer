@@ -1,61 +1,50 @@
+using Mono.Cecil;
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.UI;
+using TMPro;
+// using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviourPun
 
 {
     public static GameManager Instance;
 
-    public enum GameState { Playing, Finished }
-    public GameState currentState = GameState.Playing;
-
-    [Header("UI")]
     public GameObject winPanel;
 
-    private void Awake()
+    private bool isPlaying = true;
+
+    void Awake()
     {
-        Debug.Log($"[GameManager] Awake en {gameObject.name}");
-
-        if (Instance == null)
-        {
-            Instance = this;
-            Debug.Log("[GameManager] Instance asignada");
-        }
-        else
-        {
-            Debug.LogError("[GameManager] DUPLICADO DETECTADO, DESTRUYENDO");
-            Destroy(gameObject);
-        }
-    }
-
-    public void EndGame()
-    {
-        Debug.Log("[GameManager] EndGame() llamado");
-
-        photonView.RPC(nameof(RPC_EndGame), RpcTarget.All);
-    }
-
-    [PunRPC]
-    void RPC_EndGame()
-    {
-        Debug.Log("[GameManager] RPC_EndGame ejecutado");
-        currentState = GameState.Finished;
-
-        if (winPanel != null)
-            winPanel.SetActive(true);
-
-        Debug.Log("🏆 WIN PANEL ACTIVADO"); 
+        Instance = this;
+        winPanel.SetActive(false);
     }
 
     public bool IsPlaying()
     {
-        return currentState == GameState.Playing;
+        return isPlaying;
     }
 
-    public void loadNextLevel()
+    [PunRPC]
+    public void RPC_EndGame()
     {
-        Time.timeScale = 1f;
-        // SceneManager.LoadScene("NextLevel"); // cámbialo por tu escena
+        isPlaying = false;
+
+        Time.timeScale = 0f; // 🔒 Congela TODO
+        winPanel.SetActive(true);
+
+        Debug.Log("🏆 Juego terminado");
     }
+
+    public void EndGame()
+    {
+        photonView.RPC("RPC_EndGame", RpcTarget.All);
+    }
+
+    // public void loadNextLevel()
+    // {
+    //     Time.timeScale = 1f;
+    //     // SceneManager.LoadScene("NextLevel"); // cámbialo por tu escena
+    // }
 }
