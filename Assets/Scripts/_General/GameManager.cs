@@ -1,10 +1,8 @@
-using Mono.Cecil;
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 using TMPro;
-// using UnityEngine.SceneManagement;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviourPun
 
@@ -17,8 +15,20 @@ public class GameManager : MonoBehaviourPun
 
     void Awake()
     {
+        // Instance = this;
+        // winPanel.SetActive(false);
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
-        winPanel.SetActive(false);
+
+        Time.timeScale = 1f;
+
+        if (winPanel != null)
+            winPanel.SetActive(false);
     }
 
     public bool IsPlaying()
@@ -40,6 +50,29 @@ public class GameManager : MonoBehaviourPun
     public void EndGame()
     {
         photonView.RPC("RPC_EndGame", RpcTarget.All);
+    }
+
+    public void ResetGame()
+    {
+        Debug.Log("🔁 ResetGame llamado");
+
+        if(!PhotonNetwork.IsMasterClient)
+            return;
+
+        photonView.RPC(
+            nameof(RPC_ResetGame),
+            RpcTarget.All
+        );
+    }
+
+    [PunRPC]
+    void RPC_ResetGame()
+    {
+        Debug.Log("♻️ Recargando escena en cliente");
+
+        Time.timeScale = 1f;
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     // public void loadNextLevel()
