@@ -7,10 +7,16 @@ public class PlayerMovement : MonoBehaviourPun
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
     public float rotationSpeed = 10f;
-    public float gravity = -9.81f;
 
+    [Header("Jump Settings")]
+    public float jumpForce = 6f;
+    public LayerMask groundLayer;
+    public float gravity = -20f;
+
+
+    private bool isGrounded;
     private CharacterController controller;
-    public Animator anim;
+    private Animator anim;
     private Vector3 velocity;
 
     void Start()
@@ -19,43 +25,62 @@ public class PlayerMovement : MonoBehaviourPun
         anim = GetComponentInChildren<Animator>();
 
         if (anim == null)
-        Debug.LogError("[PlayerMovement] Animator NO encontrado");
+            Debug.LogError("[PlayerMovement] Animator NO encontrado");
     }
 
     void Update()
     {
-        if(GameManager.Instance == null)
-            return;
-        
-        if(!GameManager.Instance.IsPlaying())
-            return;
+        if (GameManager.Instance == null) return;
+        if (!GameManager.Instance.IsPlaying()) return;
+        if (!photonView.IsMine) return;
+        if (anim == null) return;
 
-        if (!photonView.IsMine) 
-            return;
-
-        if(anim == null) 
-            return;
+        isGrounded = CheckGround();
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
         Vector3 move = transform.right * horizontal + transform.forward * vertical;
-
-        //Movimiento
         controller.Move(move * moveSpeed * Time.deltaTime);
 
-        //Animacion
-        bool isMoving = move.magnitude > 0.1f;
-        anim.SetFloat("Blend", isMoving ? 1f : 0f);
+        // Animación
+        anim.SetFloat("Blend", move.magnitude > 0.1f ? 1f : 0f);
 
-        Debug.Log($"Playing: {GameManager.Instance.IsPlaying()}");
+        // Salto
+        if (isGrounded && Input.GetButtonDown("Jump"))
+        {
+            velocity.y = jumpForce;
+        }
 
-        // Gravedad básica
-        if (controller.isGrounded && velocity.y < 0)
+        // Gravedad
+        if (isGrounded && velocity.y < 0)
             velocity.y = -2f;
 
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
 
+    // bool IsGrounded()
+    // {
+    //     return Physics.Raycast(
+    //         transform.position + Vector3.up * 0.1f,
+    //         Vector3.down,
+    //         0.2f
+    //     );
+    // }
+
+    bool CheckGround()
+    {
+        Vector3 origin = transform.position + Vector3.up * 0.1f;
+        float distance = 0.3f;
+
+        return Physics.Raycast(
+            origin,
+            Vector3.down,
+            distance,
+            groundLayer
+        );
+    }
+
+    
 }

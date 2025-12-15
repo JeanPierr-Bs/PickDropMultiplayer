@@ -5230,7 +5230,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7375003860346948833}
   - component: {fileID: 962352126997644109}
-  - component: {fileID: 777740980695214257}
   - component: {fileID: 8875320622164790806}
   - component: {fileID: 5041712569653966193}
   - component: {fileID: 1520968789088164293}
@@ -5286,35 +5285,12 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 2
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.9, z: 0}
---- !u!136 &777740980695214257
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4738271977856844819}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &8875320622164790806
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5391,8 +5367,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   rotationSpeed: 10
+  jumpForce: 7
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
   gravity: -9.81
-  anim: {fileID: 9171099715823174426}
 --- !u!114 &2994949739104555137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5421,6 +5400,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 4275255522679105576}
+  mouseSensibility: 150
+  minY: -60
+  maxY: 60
 --- !u!114 &-4055095386303808948
 MonoBehaviour:
   m_ObjectHideFlags: 0

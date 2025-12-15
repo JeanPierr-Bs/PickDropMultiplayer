@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviourPun
 
         Time.timeScale = 0f; // 🔒 Congela TODO
         winPanel.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
         Debug.Log("🏆 Juego terminado");
     }
