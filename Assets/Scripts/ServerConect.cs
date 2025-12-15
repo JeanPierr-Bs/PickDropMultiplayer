@@ -1,17 +1,13 @@
 using Photon.Pun;
-using Photon.Realtime;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 public class ServerConect : MonoBehaviourPunCallbacks
 {
-    // void Awake()
-    // {
-    //     PhotonNetwork.AutomaticallySyncScene = true;
-    // }
     public void StartGame()
     {
+        if(PhotonNetwork.IsConnected)
+            return;
         // Crear o unirse a una sala
         //PhotonNetwork.JoinOrCreateRoom("DefaultRoom", new RoomOptions { MaxPlayers = 4 }, TypedLobby.Default);
         PhotonNetwork.ConnectUsingSettings();
@@ -38,9 +34,9 @@ public class ServerConect : MonoBehaviourPunCallbacks
         SceneManager.LoadScene("Lobby"); // aquí mostrarías UI de salas
     }
 
-    public override void OnJoinedRoom()
-    {
-        Debug.Log("🚀 Entraste a la sala, cargando escena de juego...");
-        SceneManager.LoadScene("GamePlay");
-    }
+    // public override void OnJoinedRoom()
+    // {
+    //     Debug.Log("🚀 Entraste a la sala, cargando escena de juego...");
+    //     SceneManager.LoadScene("GamePlay");
+    // }
 }

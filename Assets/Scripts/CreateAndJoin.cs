@@ -1,7 +1,6 @@
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
-using UnityEngine.SceneManagement;
 using TMPro;  
 
 public class CreateAndJoin : MonoBehaviourPunCallbacks
@@ -12,10 +11,21 @@ public class CreateAndJoin : MonoBehaviourPunCallbacks
     
     public void CreateRoom()
     {
-        PhotonNetwork.CreateRoom(inputCreate.text, new RoomOptions { MaxPlayers = 4 });
+        // PhotonNetwork.CreateRoom(inputCreate.text, new RoomOptions { MaxPlayers = 4 });
+        if(string.IsNullOrEmpty(inputCreate.text))
+            return;
+
+        PhotonNetwork.CreateRoom(
+            inputCreate.text,
+            new RoomOptions { MaxPlayers = 4 }
+        );
     }
     public void JoinRoom()
     {
+        // PhotonNetwork.JoinRoom(inputJoin.text);
+        if(string.IsNullOrEmpty(inputJoin.text))
+            return;
+
         PhotonNetwork.JoinRoom(inputJoin.text);
     }
     public void JoinRoomInList(string roomName)
@@ -30,13 +40,6 @@ public class CreateAndJoin : MonoBehaviourPunCallbacks
         // {
         //     PhotonNetwork.LoadLevel("GamePlay");
         // }
-        SceneManager.LoadScene("GamePlay");
-    }
-
-    // Update is called once per frame
-    void ReturnToMenu()
-    {
-        SceneManager.LoadScene("ConnectToServer");
-        
+        // SceneManager.LoadScene("GamePlay");
     }
 }
