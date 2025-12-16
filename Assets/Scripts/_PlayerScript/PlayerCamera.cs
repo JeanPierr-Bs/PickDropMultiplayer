@@ -5,11 +5,19 @@ public class PlayerCamera : MonoBehaviourPun
 {
     [Header("Camera Settings")]
     public Camera playerCamera;
+    public Transform cameraPivot;
+
+    [Header("Rotation")]
     public float mouseSensibility = 150f;
-    public float minY = -60f;
-    public float maxY = 60f;
+    public float minY = -40f;
+    public float maxY = 70f;
+
+    [Header("Camera Follow")]
+    public Vector3 cameraOffset = new Vector3(0f, 2f, -4f);
+    public float followSmooth = 10f;
     
-    float xRotation = 0f;
+    float xRotation;
+    float currentYaw;
 
     void Awake()
     {
@@ -28,7 +36,7 @@ public class PlayerCamera : MonoBehaviourPun
         }
     }
 
-    void Update()
+    void LateUpdate()
     {
         if(!photonView.IsMine) return;
         if(GameManager.Instance != null && !GameManager.Instance.IsPlaying()) return;
@@ -36,13 +44,26 @@ public class PlayerCamera : MonoBehaviourPun
         float mouseX = Input.GetAxis("Mouse X") * mouseSensibility * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensibility * Time.deltaTime;
 
-        //Rotacion de la camara
+        //Rotacion de la camara vertical
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, minY, maxY);
 
-        playerCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        //Rotacion del personaje horizontal\
+        currentYaw += mouseX;
+        transform.rotation = Quaternion.Euler(0f, currentYaw, 0f);
 
-        //Rotacion horizontal
-        transform.Rotate(Vector3.up * mouseX);
+        //Pivote Rota verticalmente
+        cameraPivot.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+
+        //Posicion de la camara
+        Vector3 desiredPos = cameraPivot.TransformPoint(cameraOffset);
+        playerCamera.transform.position = Vector3.Lerp(
+            playerCamera.transform.position,
+            desiredPos,
+            followSmooth * Time.deltaTime
+        );
+
+        //Mirar al pivot
+        playerCamera.transform.LookAt(cameraPivot);
     }
 }

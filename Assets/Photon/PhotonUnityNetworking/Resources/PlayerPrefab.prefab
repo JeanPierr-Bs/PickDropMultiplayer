@@ -921,14 +921,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 732852210526108556}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.19080894, y: 0, z: 0, w: 0.9816273}
-  m_LocalPosition: {x: 0, y: 4, z: -5}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.22, z: -0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5445206752569990555}
   m_Father: {fileID: 7375003860346948833}
-  m_LocalEulerAnglesHint: {x: 22, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &753822174465193105
 GameObject:
   m_ObjectHideFlags: 0
@@ -5365,12 +5365,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  rotationSpeed: 10
   jumpForce: 7
+  gravity: -10
+  fallMultiplier: 2
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  gravity: -10
 --- !u!114 &2994949739104555137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5399,9 +5399,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 4275255522679105576}
+  cameraPivot: {fileID: 7639647572504251709}
   mouseSensibility: 150
   minY: -60
   maxY: 60
+  cameraOffset: {x: 0, y: 2, z: -4}
+  followSmooth: 10
 --- !u!114 &-4055095386303808948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9645,8 +9648,8 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8117704419459679549}
   m_Enabled: 0
-  m_Avatar: {fileID: 9000000, guid: 84e7c2a21aecc2842877b031d1ce3557, type: 3}
-  m_Controller: {fileID: 9100000, guid: 03eeb2e872f79924d886d10c5eb340b6, type: 2}
+  m_Avatar: {fileID: 9000000, guid: 761f8dfa87de85a468c7bb470366d0f6, type: 3}
+  m_Controller: {fileID: 9100000, guid: 1dad6eb831817764e8bc65de9255534c, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
