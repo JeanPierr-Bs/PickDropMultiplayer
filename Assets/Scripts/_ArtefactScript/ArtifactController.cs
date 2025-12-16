@@ -18,10 +18,10 @@ public class ArtifactController : MonoBehaviourPun
             return;
 
         //Asegurar el OwnerShip
-        if(!photonView.IsMine)
-        {
-            photonView.RequestOwnership();
-        }
+        // if(!photonView.IsMine)
+        // {
+        //     photonView.RequestOwnership();
+        // }
 
         photonView.RPC(
             nameof(RPC_PickUp),

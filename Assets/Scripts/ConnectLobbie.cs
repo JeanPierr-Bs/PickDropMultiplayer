@@ -4,16 +4,43 @@ using UnityEngine.SceneManagement;
 
 public class ConnectLobbie : MonoBehaviourPunCallbacks
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public static ConnectLobbie Instance;
+
     void Awake()
     {
-        //PhotonNetwork.ConnectUsingSettings();
-    }   
-    void Start()
-    {
-        
+        if(Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
     }
 
-    // Update is called once per frame
+    public void StartGame()
+    {
+        if(!PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("⛔ Solo el Host puede iniciar el juego");
+            return;
+        }
 
+        Debug.Log("🎬 Host inicia Gameplay");
+
+        PhotonNetwork.IsMessageQueueRunning = false;
+
+        photonView.RPC(
+            nameof(RPC_LoadGameplay),
+            RpcTarget.All
+        );
+        // Debug.Log("🌍 Cargando Gameplay");
+        // SceneManager.LoadScene("GamePlay");
+    }
+
+    [PunRPC]
+    void RPC_LoadGameplay()
+    {
+        Debug.Log("🌍 Cargando Gameplay");
+        SceneManager.LoadScene("GamePlay");
+    }
 }

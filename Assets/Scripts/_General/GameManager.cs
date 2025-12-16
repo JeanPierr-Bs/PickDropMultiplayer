@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviourPun
 
         Instance = this;
 
+        PhotonNetwork.IsMessageQueueRunning = true;
+
         Time.timeScale = 1f;
 
         if (winPanel != null)
