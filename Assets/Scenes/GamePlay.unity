@@ -45199,7 +45199,7 @@ GameObject:
   - component: {fileID: 1380059986}
   - component: {fileID: 1380059987}
   m_Layer: 0
-  m_Name: PhotonRoomManager
+  m_Name: PhotonRoomManagerSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45232,9 +45232,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1fd5af9115f1bc4c9a123e2c2662072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 4738271977856844819, guid: 81a37c0ad413b1d48a37cd7ea3ba0643, type: 3}
-  spawnPoints:
-  - {fileID: 1540719777}
+  playerPrefab: {fileID: 7407783720483754342, guid: 81a37c0ad413b1d48a37cd7ea3ba0643, type: 3}
+  spawnPoints: {fileID: 1540719777}
 --- !u!1 &1381191889
 GameObject:
   m_ObjectHideFlags: 0

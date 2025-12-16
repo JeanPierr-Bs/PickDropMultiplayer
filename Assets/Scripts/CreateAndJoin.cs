@@ -36,6 +36,7 @@ public class CreateAndJoin : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("🚀 Entraste a la sala, cargando escena de juego...");
+        PhotonNetwork.LoadLevel("GamePlay");
         // if(PhotonNetwork.IsMasterClient)
         // {
         //     PhotonNetwork.LoadLevel("GamePlay");
