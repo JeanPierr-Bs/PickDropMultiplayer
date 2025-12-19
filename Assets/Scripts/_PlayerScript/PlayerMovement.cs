@@ -33,19 +33,19 @@ public class PlayerMovement : MonoBehaviourPun
         if (anim == null) return;
 
         isGrounded = CheckGround();
+        anim.SetBool("IsGrounded", isGrounded);
 
-        // INPUT CRUDO
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
 
         Vector3 move = transform.right * h + transform.forward * v;
         controller.Move(move * moveSpeed * Time.deltaTime);
 
-        // 🎭 ANIMACIÓN INMEDIATA
+        // 🎭 Blend SIEMPRE depende del input, no del estado previo
         float blendValue = move.magnitude > 0.05f ? 1f : 0f;
         anim.SetFloat("Blend", blendValue);
 
-        // 🦘 SALTO
+        // 🦘 Salto
         if (isGrounded)
         {
             if (velocity.y < 0)
@@ -58,7 +58,7 @@ public class PlayerMovement : MonoBehaviourPun
             }
         }
 
-        // 🌍 GRAVEDAD CON PESO
+        // 🌍 Gravedad con carácter
         if (velocity.y < 0)
             velocity.y += gravity * fallMultiplier * Time.deltaTime;
         else
@@ -69,7 +69,7 @@ public class PlayerMovement : MonoBehaviourPun
 
     bool CheckGround()
     {
-        Vector3 origin = transform.position + Vector3.up * 0.2f;
-        return Physics.Raycast(origin, Vector3.down, 0.4f, groundLayer);
+        Vector3 origin = transform.position + Vector3.up * 0.4f;
+        return Physics.Raycast(origin, Vector3.down, 0.6f, groundLayer);
     }
 }

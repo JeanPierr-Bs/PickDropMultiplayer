@@ -8,17 +8,21 @@ public class PlayerPickup : MonoBehaviourPun
 
     void OnTriggerEnter(Collider other)
     {
-        if (!GameManager.Instance.IsPlaying())
-            return;
+        if (!GameManager.Instance.IsPlaying()) return;
+    if (!photonView.IsMine) return;
 
-         if (!photonView.IsMine) return;
+    ArtifactController artifact = other.GetComponent<ArtifactController>();
+    if (artifact == null) return;
 
-        ArtifactController artifact = other.GetComponent<ArtifactController>();
+    PhotonView holdPV = holdPoint.GetComponent<PhotonView>();
+    if (holdPV == null)
+    {
+        Debug.LogError("❌ ArtifactHoldPoint no tiene PhotonView");
+        return;
+    }
 
-        if (artifact == null) return;
-
-        artifact.PickUp(holdPoint);
-        carriedArtifact = artifact;
+    artifact.PickUp(holdPV.ViewID);
+    carriedArtifact = artifact;
     }
 
     public ArtifactController GetCarriedArtifact()

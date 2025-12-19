@@ -5,17 +5,17 @@ public class ArtifactController : MonoBehaviourPun
 {
     public Transform currentHolder;
 
-    public void PickUp(Transform holder)
+    public void PickUp(int holdPointViewID)
     {
         if (!PhotonNetwork.IsConnected || !PhotonNetwork.InRoom)
             return;
 
-        if (holder == null)
-            return;
+        // if (holder == null)
+        //     return;
 
-        PhotonView holderPV = holder.GetComponentInParent<PhotonView>();
-        if (holderPV == null)
-            return;
+        // PhotonView holderPV = holder.GetComponentInParent<PhotonView>();
+        // if (holderPV == null)
+        //     return;
 
         //Asegurar el OwnerShip
         // if(!photonView.IsMine)
@@ -26,22 +26,25 @@ public class ArtifactController : MonoBehaviourPun
         photonView.RPC(
             nameof(RPC_PickUp),
             RpcTarget.All,
-            holderPV.ViewID
+            holdPointViewID
         );
     }
 
     [PunRPC]
-    void RPC_PickUp(int holderViewID)
+    void RPC_PickUp(int holdPointViewID)
     {
-        PhotonView holderPV = PhotonView.Find(holderViewID);
-        if (holderPV == null)
-            return;
+        PhotonView holdPV = PhotonView.Find(holdPointViewID);
+    if (holdPV == null)
+    {
+        Debug.LogError("❌ HoldPoint PhotonView no encontrado");
+        return;
+    }
 
-        currentHolder = holderPV.transform;
+    currentHolder = holdPV.transform;
 
-        transform.SetParent(currentHolder);
-        transform.localPosition = new Vector3(0, 1.5f, 0);
-        transform.localRotation = Quaternion.identity;
+    transform.SetParent(currentHolder);
+    transform.localPosition = Vector3.zero;
+    transform.localRotation = Quaternion.identity;
     }
 
     public void Drop(Vector3 dropPosition)
